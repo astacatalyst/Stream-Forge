@@ -13,3 +13,11 @@ app.add_middleware(
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+@app.get("/workers")
+def get_workers():
+    return [
+        {"id": "worker-1", "label": "Worker 1", "status": "healthy"},
+        {"id": "worker-2", "label": "Worker 2", "status": "healthy"},
+        {"id": "worker-3", "label": "Worker 3", "status": "down"},
+    ]
