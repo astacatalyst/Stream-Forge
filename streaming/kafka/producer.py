@@ -1,6 +1,9 @@
 import json
 import time
+from datetime import datetime, timezone
+
 from kafka import KafkaProducer
+
 
 producer = KafkaProducer(
     bootstrap_servers="localhost:9092",
@@ -11,23 +14,22 @@ TOPIC = "stream-events"
 
 events = [
     {
-        "id": 1,
-        "name": "Gaming Live",
-        "status": "active"
+        "truck_id": "TRUCK001",
+        "temperature": 25.5
     },
     {
-        "id": 2,
-        "name": "Payment Stream",
-        "status": "active"
+        "truck_id": "TRUCK002",
+        "temperature": 27.2
     },
     {
-        "id": 3,
-        "name": "Order Stream",
-        "status": "active"
+        "truck_id": "TRUCK003",
+        "temperature": 24.8
     }
 ]
 
 for event in events:
+    event["timestamp"] = datetime.now(timezone.utc).isoformat()
+
     producer.send(TOPIC, value=event)
     print(f"Sent: {event}")
     time.sleep(1)
