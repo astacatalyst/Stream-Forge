@@ -75,3 +75,9 @@ def get_locations():
         {"truck_id": "TRUCK-1008", "lat": 17.40, "lng": 78.39, "status": "moving", "speed": 58},
         {"truck_id": "TRUCK-1009", "lat": 17.36, "lng": 78.46, "status": "moving", "speed": 70},
     ]
+
+@app.get("/real-telemetry")
+def get_real_telemetry():
+    return list(latest_truck_data.values())
+
+
