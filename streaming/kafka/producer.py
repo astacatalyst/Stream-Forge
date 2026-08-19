@@ -1,4 +1,5 @@
 import json
+import json
 import time
 from datetime import datetime, timezone
 
@@ -34,5 +35,10 @@ for event in events:
     print(f"Sent: {event}")
     time.sleep(1)
 
-producer.flush()
-producer.close()
+    producer.flush()
+
+    print("-" * 75)
+    print("✅ 5 truck records sent successfully")
+    print("⏳ Waiting 2 seconds for next update...")
+
+    time.sleep(2)

@@ -6,38 +6,20 @@ TOPIC = "stream-events"
 consumer = KafkaConsumer(
     TOPIC,
     bootstrap_servers="localhost:9092",
-    group_id="stream-forge-consumer",
-    auto_offset_reset="earliest",
-    value_deserializer=lambda value: json.loads(
-        value.decode("utf-8")
-    )
+    value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+    auto_offset_reset="latest",
+    enable_auto_commit=True,
+    group_id="truck-consumer-group"
 )
 
-print("=" * 50)
-print("        STREAM FORGE - KAFKA CONSUMER")
-print("=" * 50)
-print(f"Topic: {TOPIC}")
-print("Waiting for messages...\n")
+print("Consumer started...")
 
-try:
-    for message in consumer:
-        event = message.value
+for message in consumer:
+    data = message.value
 
-        print("Received Event")
-        print("-" * 40)
-
-        print(f"Truck ID    : {event.get('truck_id')}")
-        print(f"Temperature : {event.get('temperature')}")
-        print(f"Timestamp   : {event.get('timestamp')}")
-        print(f"Topic       : {message.topic}")
-        print(f"Partition   : {message.partition}")
-        print(f"Offset      : {message.offset}")
-
-        print("-" * 40)
-
-except KeyboardInterrupt:
-    print("\nConsumer stopped by user.")
-
-finally:
-    consumer.close()
-    print("Kafka consumer closed.")
+    print(
+        f"Truck ID: {data['truck_id']} | "
+        f"Location: {data['location']} | "
+        f"Speed: {data['speed']} km/h | "
+        f"Fuel: {data['fuel']}%"
+    )
