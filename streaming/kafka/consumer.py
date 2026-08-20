@@ -27,7 +27,6 @@ print("Waiting for truck telemetry...\n")
 
 try:
     for message in consumer:
-
         event = message.value
 
         print("Received Telemetry")
@@ -48,4 +47,4 @@ except KeyboardInterrupt:
 
 finally:
     consumer.close()
-    print("Kafka Consumer closed.")
+    print("Kafka consumer closed.")
