@@ -1,11 +1,15 @@
 import json
+
 from kafka import KafkaConsumer
 
+
 TOPIC = "stream-events"
+BOOTSTRAP_SERVER = "localhost:9092"
+
 
 consumer = KafkaConsumer(
     TOPIC,
-    bootstrap_servers="localhost:9092",
+    bootstrap_servers=BOOTSTRAP_SERVER,
     group_id="stream-forge-consumer",
     auto_offset_reset="earliest",
     value_deserializer=lambda value: json.loads(
@@ -13,25 +17,28 @@ consumer = KafkaConsumer(
     )
 )
 
-print("=" * 50)
-print("        STREAM FORGE - KAFKA CONSUMER")
-print("=" * 50)
+
+print("=" * 60)
+print("       STREAM FORGE - KAFKA TELEMETRY CONSUMER")
+print("=" * 60)
 print(f"Topic: {TOPIC}")
-print("Waiting for messages...\n")
+print("Waiting for truck telemetry...\n")
+
 
 try:
     for message in consumer:
         event = message.value
 
-        print("Received Event")
+        print("Received Telemetry")
         print("-" * 40)
 
-        print(f"Truck ID    : {event.get('truck_id')}")
-        print(f"Temperature : {event.get('temperature')}")
-        print(f"Timestamp   : {event.get('timestamp')}")
-        print(f"Topic       : {message.topic}")
-        print(f"Partition   : {message.partition}")
-        print(f"Offset      : {message.offset}")
+        print(f"Truck ID     : {event.get('truck_id')}")
+        print(f"Temperature  : {event.get('temperature')} °C")
+        print(f"Timestamp    : {event.get('timestamp')}")
+
+        print(f"Topic        : {message.topic}")
+        print(f"Partition    : {message.partition}")
+        print(f"Offset       : {message.offset}")
 
         print("-" * 40)
 
